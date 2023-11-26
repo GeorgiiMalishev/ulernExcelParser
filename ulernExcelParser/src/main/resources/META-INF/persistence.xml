@@ -11,7 +11,7 @@
         <class>entities.TaskType</class>
         <class>entities.Mark</class>
         <properties>
-            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLiteDialect"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
             <property name="hibernate.connection.driver_class" value="org.sqlite.JDBC"/>
             <property name="hibernate.connection.url" value="jdbc:sqlite:E:\My files\Java\ulernExcelParser\identifier.sqlite"/>
         </properties>
