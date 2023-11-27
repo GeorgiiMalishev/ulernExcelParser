@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="2.2" xmlns="http://xmlns.jcp.org/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence
+    http://xmlns.jcp.org/xml/ns/persistence/persistence_2_2.xsd">
+
+    <persistence-unit name="sqlitePU" transaction-type="RESOURCE_LOCAL">
+        <class>entities.Student</class>
+        <class>entities.Chapter</class>
+        <class>entities.Task</class>
+        <class>entities.TaskType</class>
+        <class>entities.Mark</class>
+        <properties>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.SQLServerDialect" />
+            <property name="hibernate.connection.driver_class" value="org.sqlite.JDBC"/>
+            <property name="hibernate.connection.url" value="jdbc:sqlite:E:\My files\Java\ulernExcelParser\identifier.sqlite"/>
+        </properties>
+    </persistence-unit>
+</persistence>
