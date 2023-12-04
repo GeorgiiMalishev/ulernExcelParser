@@ -1,29 +1,50 @@
 package entities;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.UUID;
-import javax.persistence.*;
 
-@Entity
 public class Task {
-    private String name;
-    private UUID chapterId;
-    private int score;
-
-    @Id
     private UUID id;
-    @Enumerated(EnumType.STRING)
+    private UUID chapterId;
+    private String name;
     private TaskType type;
-    @ManyToOne
-    private Chapter chapter;
+    private int score;
+    private final int columnIndex;
 
-    public Task(TaskType type, String name, UUID chapterId, UUID id) {
-        this.type = type;
+    public Task(String name, TaskType type, int i) {
         this.name = name;
-        this.chapterId = chapterId;
-        this.id = id;
+        this.type = type;
+        this.columnIndex = i;
     }
 
-    public Task() {
+    public Task(Task pattern, UUID id, UUID chapterId, int score){
+        this.name = pattern.name;
+        this.type = pattern.type;
+        this.columnIndex = pattern.columnIndex;
+        this.id = id;
+        this.chapterId = chapterId;
+        this.score = score;
+    }
 
+    // геттеры и сеттеры
+
+    public void insertData(Connection connection) throws SQLException {
+        String insertDataSQL = "INSERT INTO task (task_id, chapter_id, task_title, task_type_id, score) VALUES (?, ?, ?, ?, ?);";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertDataSQL)) {
+            preparedStatement.setString(1, id.toString());
+            preparedStatement.setString(2, chapterId.toString());
+            preparedStatement.setString(3, name);
+            preparedStatement.setInt(4, type.ordinal());
+            preparedStatement.setInt(5, score);
+
+            preparedStatement.executeUpdate();
+        }
+    }
+
+    public int getColumnIndex() {
+        return columnIndex;
     }
 }

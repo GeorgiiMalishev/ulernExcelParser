@@ -1,35 +1,49 @@
 package entities;
 
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.UUID;
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.OneToMany;
 
-@Entity
-public class Chapter {
-    private String name;
-    private UUID markID;
-    private int exerciseScore;
-    private int activityScore;
-    private int seminarScore;
-    private int practiseScore;
-
-    @Id
+public class Chapter implements DatabaseStorable {
     private UUID id;
-    @OneToMany(mappedBy = "chapter")
-    private ArrayList<Task> tasks;
-    @ManyToOne
-    private Mark mark;
+    private UUID courseId;
+    private String name;
 
-    public Chapter(String name, UUID markID, UUID id) {
+    private int exerciseScore;
+    private int practiceScore;
+    private int seminarScore;
+    private int activityScore;
+
+    public ArrayList<Task> tasks = new ArrayList<Task>();
+
+    public Chapter(String name) {
         this.name = name;
-        this.markID = markID;
+    }
+    public Chapter(Chapter pattern, UUID id, UUID courseID){
+        this.name = pattern.name;
         this.id = id;
+        this.courseId = courseID;
     }
 
-    public Chapter() {
+    public void addTask(Task task) {
+        tasks.add(task);
+    }
 
+    @Override
+    public void insertData(Connection connection) throws SQLException {
+        String insertDataSQL = "INSERT INTO chapter (chapter_id, course_id, chapter_title) VALUES (?, ?, ?);";
+
+        try (PreparedStatement preparedStatement = connection.prepareStatement(insertDataSQL)) {
+            preparedStatement.setString(1, id.toString());
+            preparedStatement.setString(2, courseId.toString());
+            preparedStatement.setString(3, name);
+
+            preparedStatement.executeUpdate();
+        }
+        for (var task : tasks) {
+            task.insertData(connection);
+        }
     }
 }

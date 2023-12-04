@@ -6,7 +6,7 @@
         <!-- JDBC Database connection settings -->
         <property name="hibernate.connection.driver_class">org.sqlite.JDBC</property>
         <property name="hibernate.connection.url">jdbc:sqlite:identifier.sqlite</property>
-        <property name="hibernate.dialect">org.sqlite.hibernate.dialect.SQLiteDialect</property>
+        <property name="hibernate.dialect">org.hibernate.community.dia</property>
         <!-- JDBC connection pool settings -->
         <property name="hibernate.c3p0.min_size">5</property>
         <property name="hibernate.c3p0.max_size">20</property>
