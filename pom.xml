@@ -114,8 +114,14 @@
             <artifactId>poi-ooxml-full</artifactId>
             <version>5.0.0</version>
         </dependency>
-    </dependencies>
 
+        <dependency>
+            <groupId>com.vk.api</groupId>
+            <artifactId>sdk</artifactId>
+            <version>1.0.15</version>
+        </dependency>
+
+    </dependencies>
     <build>
         <finalName>ulernExcelParser</finalName>
     </build>

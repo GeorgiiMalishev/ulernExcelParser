@@ -14,6 +14,8 @@ public class Student {
     private String id;
     private ArrayList<Course> courses = new ArrayList<Course>();
 
+    private String studentVk;
+
     public Student(String firstname, String lastname, String email, String group, String id) {
         this.firstname = firstname;
         this.lastname = lastname;
@@ -40,6 +42,8 @@ public class Student {
             preparedStatement.setString(5, group);
 
             preparedStatement.executeUpdate();
+        } catch(Exception e) {
+            e.printStackTrace();
         }
         for (var course : courses) {
             course.insertData(connection);

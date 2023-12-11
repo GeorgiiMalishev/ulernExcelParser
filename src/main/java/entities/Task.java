@@ -47,4 +47,16 @@ public class Task {
     public int getColumnIndex() {
         return columnIndex;
     }
+
+    public String getName() {
+        return name;
+    }
+
+    public TaskType getType(){
+        return type;
+    }
+
+    public int getScore(){
+        return score;
+    }
 }
