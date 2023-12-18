@@ -51,17 +51,15 @@ public class Chapter implements DatabaseStorable {
     public void insertData(Connection connection) throws SQLException {
         String insertDataSQL = "INSERT INTO chapter (chapter_id, course_id, chapter_title, exerciseScore, practiceScore, seminarScore, activityScore) VALUES (?, ?, ?, ?, ?, ?, ?);";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertDataSQL)) {
-            preparedStatement.setString(1, id.toString());
-            preparedStatement.setString(2, courseId.toString());
-            preparedStatement.setString(3, name);
-            preparedStatement.setInt(4, exerciseScore);
-            preparedStatement.setInt(5, practiceScore);
-            preparedStatement.setInt(6, seminarScore);
-            preparedStatement.setInt(7, activityScore);
-
-            preparedStatement.executeUpdate();
-        }
+        PreparedStatement preparedStatement = connection.prepareStatement(insertDataSQL);
+        preparedStatement.setString(1, id.toString());
+        preparedStatement.setString(2, courseId.toString());
+        preparedStatement.setString(3, name);
+        preparedStatement.setInt(4, exerciseScore);
+        preparedStatement.setInt(5, practiceScore);
+        preparedStatement.setInt(6, seminarScore);
+        preparedStatement.setInt(7, activityScore);
+        preparedStatement.executeUpdate();
         for (var task : tasks) {
             task.insertData(connection);
         }

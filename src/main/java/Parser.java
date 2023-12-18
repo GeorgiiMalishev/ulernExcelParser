@@ -2,8 +2,6 @@ import entities.*;
 import org.apache.poi.ss.usermodel.*;
 
 import java.io.IOException;
-import java.sql.Connection;
-import java.sql.SQLException;
 import java.util.*;
 import java.io.FileInputStream;
 import java.util.regex.Pattern;
@@ -12,36 +10,22 @@ import java.util.regex.Pattern;
 public class  Parser{
     public static void Parse(String excelFilePath) {
 
-
-        Connection connection = SQLiteConnector.getConnection();
         try (FileInputStream inputStream = new FileInputStream(excelFilePath)) {
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
             var students = parseStudents(getCoursePattern(sheet), sheet);
-            connection.setAutoCommit(false);
-            students.forEach(s -> {
-                try{s.insertData(connection);}
-                catch (Exception e){e.printStackTrace();}
-            });
-            connection.commit();
+            //StudentUtil.insertStudents(students);
+            new Chart("Зависимость среднего балла от имени").showBarChart("Имя студента", "Средние баллы", StudentUtil.getNameScoreMap(students));
+            new Chart("Количество студентов с одним именем").showBarChart( "Имя студента", "Количество студентов", StudentUtil.getNameCountMap(students));
+            new Chart("Топ 10 студентов по среднему баллу").showBarChart("Имя студента", "Средние баллы", StudentUtil.getTopStudentsMap(students, 10));
+            new Chart("").showPieChart(StudentUtil.getNameScoreMap(students));
+            new Chart("").showPieChart(StudentUtil.getNameCountMap(students));
             workbook.close();
-        } catch (SQLException | IOException e) {
-            try {
-                connection.rollback();
-            }
-            catch (Exception e2){
-                e2.printStackTrace();
-            }
+        } catch (IOException e) {
             e.printStackTrace();
-        }
-        finally {
-            try{
-                connection.setAutoCommit(true);
-            } catch (Exception e){
-            e.printStackTrace();
-        }
         }
     }
+
     private static Course getCoursePattern(Sheet sheet){
         var taskDict = new HashMap<String, TaskType>();
         taskDict.put("Упр", TaskType.Exercise);

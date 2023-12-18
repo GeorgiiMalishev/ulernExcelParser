@@ -33,15 +33,14 @@ public class Task {
     public void insertData(Connection connection) throws SQLException {
         String insertDataSQL = "INSERT INTO task (task_id, chapter_id, task_title, task_type_id, score) VALUES (?, ?, ?, ?, ?);";
 
-        try (PreparedStatement preparedStatement = connection.prepareStatement(insertDataSQL)) {
-            preparedStatement.setString(1, id.toString());
-            preparedStatement.setString(2, chapterId.toString());
-            preparedStatement.setString(3, name);
-            preparedStatement.setInt(4, type.ordinal());
-            preparedStatement.setInt(5, score);
+        PreparedStatement preparedStatement = connection.prepareStatement(insertDataSQL);
+        preparedStatement.setString(1, id.toString());
+        preparedStatement.setString(2, chapterId.toString());
+        preparedStatement.setString(3, name);
+        preparedStatement.setInt(4, type.ordinal());
+        preparedStatement.setInt(5, score);
 
-            preparedStatement.executeUpdate();
-        }
+        preparedStatement.executeUpdate();
     }
 
     public int getColumnIndex() {
