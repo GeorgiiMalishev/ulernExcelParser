@@ -32,6 +32,14 @@ public class Chapter implements DatabaseStorable {
         this.activityScore = activityScore;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public int getPracticeScore() {
+        return practiceScore;
+    }
+
     public ArrayList<Task> tasks = new ArrayList<Task>();
 
     public Chapter(String name) {

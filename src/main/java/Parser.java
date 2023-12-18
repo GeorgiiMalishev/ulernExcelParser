@@ -14,12 +14,13 @@ public class  Parser{
             Workbook workbook = WorkbookFactory.create(inputStream);
             Sheet sheet = workbook.getSheetAt(0);
             var students = parseStudents(getCoursePattern(sheet), sheet);
-            //StudentUtil.insertStudents(students);
+            StudentUtil.insertStudents(students);
             new Chart("Зависимость среднего балла от имени").showBarChart("Имя студента", "Средние баллы", StudentUtil.getNameScoreMap(students));
             new Chart("Количество студентов с одним именем").showBarChart( "Имя студента", "Количество студентов", StudentUtil.getNameCountMap(students));
             new Chart("Топ 10 студентов по среднему баллу").showBarChart("Имя студента", "Средние баллы", StudentUtil.getTopStudentsMap(students, 10));
             new Chart("").showPieChart(StudentUtil.getNameScoreMap(students));
             new Chart("").showPieChart(StudentUtil.getNameCountMap(students));
+            new Chart("Зависимость среднего балла практики от темы").showBarChart("Название практики", "Средние баллы", StudentUtil.getPractiseScoreMap(students));
             workbook.close();
         } catch (IOException e) {
             e.printStackTrace();

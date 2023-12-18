@@ -73,9 +73,31 @@ public class StudentUtil {
                 ));
     }
 
-    public Map<String, Double> getScorePractiseMap(List<Student> students){
-        Map<String, Double> scores = new LinkedHashMap<>();
+    public static Map<String, Double> getPractiseScoreMap(List<Student> students){
+        Map<String, Double> scores = getPractiseScoreSumMap(students);
+        for (String chapterName : scores.keySet()){
+            scores.put(chapterName, scores.get(chapterName)/students.size());
+        }
+        return scores;
+    }
 
+    public static Map<String, Double> getPractiseScoreSumMap(List<Student> students){
+        Map<String, Double> scoresSum = new HashMap<>();
+        for (Student student : students){
+            var course = student.getCourse(0);
+            for(int i = 0; i < course.getChaptersSize(); i++){
+                var chapter = course.getChapter(i);
+                scoresSum.put(chapter.getName(), scoresSum.getOrDefault(chapter.getName(), 0.0) + chapter.getPracticeScore());
+            }
+        }
+        return scoresSum.entrySet().stream()
+                .sorted(Map.Entry.comparingByValue(Comparator.reverseOrder()))
+                .collect(Collectors.toMap(
+                        Map.Entry::getKey,
+                        Map.Entry::getValue,
+                        (e1, e2) -> e1,
+                        LinkedHashMap::new
+                ));
     }
 
     public static void insertStudents(List<Student> students){
